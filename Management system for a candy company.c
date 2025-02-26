@@ -1,7 +1,5 @@
 /****************
  * Yehonatan Hadar
- * 209522382
- * Assignment Number 5
 ****************/
 
 #include "ex_5.h"
