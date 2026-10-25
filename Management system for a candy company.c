@@ -22,7 +22,16 @@ int main()
                "4. See what projects are in work\n5. See which people are in what projects\n"
                "6. Work on existing project\n7. Leave the company\n8. Exit\nEnter your choice: ");
 
-        scanf("%d", &desiredOption);
+        int readResult = scanf("%d", &desiredOption);
+        //The input ended: exit as if Exit was chosen
+        if(readResult == EOF)
+            desiredOption = EXIT;
+        //Not a number: skip the rest of the line, it is reported as an invalid choice
+        else if(readResult != 1)
+        {
+            clearInputBuffer();
+            desiredOption = 0;
+        }
 
         switch (desiredOption)
         {
@@ -120,9 +129,13 @@ void joinCompany(Worker *workers[], int *workerCount)
         }
         int nameCounter=INITIALIZATION_COUNTER_TO_ZERO;
         clearInputBuffer();
-        char *ptrWorkerName;
+        char *ptrWorkerName = NULL;
         printf("Enter the name of the new worker: ");
-        scanf("%c", &workerName[nameCounter]);
+        if(scanf("%c", &workerName[nameCounter]) != 1)
+            workerName[nameCounter] = '\n';
+        //An empty line ends the input right away
+        if(workerName[nameCounter] == '\n')
+            workerName[nameCounter] = '\0';
 
         //Inputting the characters into the character array of the worker's name
         while (workerName[nameCounter] != '\0')
@@ -141,7 +154,8 @@ void joinCompany(Worker *workers[], int *workerCount)
             else
             {
                 workerName=ptrWorkerName;
-                scanf("%c", &workerName[nameCounter]);
+                if(scanf("%c", &workerName[nameCounter]) != 1)
+                    workerName[nameCounter] = '\n';
                 if(workerName[nameCounter]=='\n')
                     workerName[nameCounter]='\0';
                 ptrWorkerName=NULL;
@@ -226,7 +240,7 @@ void openNewProject(Worker *workers[], int workerCount, Project *projects[], int
             printf("Who are you? Choose a number:\n");
             displayAllWorkers(workers, workerCount);
             printf("Enter your choice: ");
-            scanf("%d", &workerChoice);
+            workerChoice = readNumber();
 
             //Checks if the user's input is valid
             if((workerChoice<MIN_NUMBER_IN_DISPLAY_LIST)||(workerChoice>workerCount))
@@ -243,10 +257,14 @@ void openNewProject(Worker *workers[], int workerCount, Project *projects[], int
                 }
 
                 int nameCounter=INITIALIZATION_COUNTER_TO_ZERO;
-                char *ptrProjectName;
+                char *ptrProjectName = NULL;
                 clearInputBuffer();
                 printf("Enter the name of the new project: ");
-                scanf("%c", &projectName[nameCounter]);
+                if(scanf("%c", &projectName[nameCounter]) != 1)
+                    projectName[nameCounter] = '\n';
+                //An empty line ends the input right away
+                if(projectName[nameCounter] == '\n')
+                    projectName[nameCounter] = '\0';
                 //Inputting the characters into the character array of the project's name
                 while (projectName[nameCounter] != '\0')
                 {
@@ -263,7 +281,8 @@ void openNewProject(Worker *workers[], int workerCount, Project *projects[], int
                     else
                     {
                         projectName=ptrProjectName;
-                        scanf("%c", &projectName[nameCounter]);
+                        if(scanf("%c", &projectName[nameCounter]) != 1)
+                            projectName[nameCounter] = '\n';
                         if(projectName[nameCounter]=='\n')
                             projectName[nameCounter]='\0';
                         ptrProjectName=NULL;
@@ -421,7 +440,7 @@ void workerJoinsProject(Worker *workers[], int workerCount, Project *projects[],
             printf("Select a worker to join a project:\n");
             displayAllWorkers(workers, workerCount);
             printf("Enter the worker's number: ");
-            scanf("%d", &choiceWorker);
+            choiceWorker = readNumber();
 
             //Checks if the user's input is valid
             if((choiceWorker<1)||(choiceWorker>workerCount))
@@ -432,7 +451,7 @@ void workerJoinsProject(Worker *workers[], int workerCount, Project *projects[],
                 printf("Select a project to join:\n");
                 displayAllProjectsInJoinAnExistingProject(projects, projectCount);
                 printf("Enter the project's number: ");
-                scanf("%d", &choiceProject);
+                choiceProject = readNumber();
 
                 //Checks if the user's input is valid
                 if((choiceProject<MIN_NUMBER_IN_DISPLAY_LIST)||(choiceProject>projectCount))
@@ -702,7 +721,7 @@ void workOnProject(Worker *workers[], int workerCount, int *projectCount)
             printf("Select a worker:\n");
             displayAllWorkers(workers, workerCount);
             printf("Enter the worker's number: ");
-            scanf("%d", &workerChoice);
+            workerChoice = readNumber();
 
             //Checks if the user's input is valid
             if ((workerChoice < MIN_NUMBER_IN_DISPLAY_LIST) || (workerChoice > workerCount))
@@ -724,7 +743,7 @@ void workOnProject(Worker *workers[], int workerCount, int *projectCount)
                                                               projectCount);
 
                     printf("Enter the project number: ");
-                    scanf("%d", &projectChoice);
+                    projectChoice = readNumber();
                     //Checks if the user's input is valid
                     if ((projectChoice < MIN_NUMBER_IN_DISPLAY_LIST) ||
                     (projectChoice > workers[workerChoice - DECREASE_VALUE_BY_ONE]->projectCount))
@@ -742,9 +761,13 @@ void workOnProject(Worker *workers[], int workerCount, int *projectCount)
 
                         int featureActionIndex = INITIALIZATION_COUNTER_TO_ZERO;
                         clearInputBuffer();
-                        char *ptrFeatureAction;
+                        char *ptrFeatureAction = NULL;
                         printf("Do you want to add or remove a feature? (add/remove): ");
-                        scanf("%c", &featureAction[featureActionIndex]);
+                        if(scanf("%c", &featureAction[featureActionIndex]) != 1)
+                            featureAction[featureActionIndex] = '\n';
+                        //An empty line ends the input right away
+                        if(featureAction[featureActionIndex] == '\n')
+                            featureAction[featureActionIndex] = '\0';
 
                         //Inputting the characters into the character array of the feature action's name
                         while (featureAction[featureActionIndex] != '\0')
@@ -762,7 +785,8 @@ void workOnProject(Worker *workers[], int workerCount, int *projectCount)
                             {
                                 featureAction=ptrFeatureAction;
 
-                                scanf("%c", &featureAction[featureActionIndex]);
+                                if(scanf("%c", &featureAction[featureActionIndex]) != 1)
+                                    featureAction[featureActionIndex] = '\n';
 
                                 if (featureAction[featureActionIndex] == '\n')
                                     featureAction[featureActionIndex] = '\0';
@@ -794,9 +818,13 @@ void workOnProject(Worker *workers[], int workerCount, int *projectCount)
                                 }
 
                                 int featureNameCounter = INITIALIZATION_COUNTER_TO_ZERO;
-                                char *ptrFeatureName;
+                                char *ptrFeatureName = NULL;
                                 printf("Enter the new feature: ");
-                                scanf("%c", &featureName[featureNameCounter]);
+                                if(scanf("%c", &featureName[featureNameCounter]) != 1)
+                                    featureName[featureNameCounter] = '\n';
+                                //An empty line ends the input right away
+                                if(featureName[featureNameCounter] == '\n')
+                                    featureName[featureNameCounter] = '\0';
                                 //Inputting the characters into the character array of the new feature's name
                                 while (featureName[featureNameCounter] != '\0')
                                 {
@@ -815,7 +843,8 @@ void workOnProject(Worker *workers[], int workerCount, int *projectCount)
                                     else
                                     {
                                         featureName=ptrFeatureName;
-                                        scanf("%c", &featureName[featureNameCounter]);
+                                        if(scanf("%c", &featureName[featureNameCounter]) != 1)
+                                            featureName[featureNameCounter] = '\n';
                                         if (featureName[featureNameCounter] == '\n')
                                             featureName[featureNameCounter] = '\0';
                                         ptrFeatureName=NULL;
@@ -876,7 +905,7 @@ void workOnProject(Worker *workers[], int workerCount, int *projectCount)
                                         projects[projectChoice -DECREASE_VALUE_BY_ONE]->features);
 
                                         printf("Enter your choice: ");
-                                        scanf("%d", &removeFeature);
+                                        removeFeature = readNumber();
 
                                         if ((removeFeature < MIN_NUMBER_IN_DISPLAY_LIST) ||
                                         (removeFeature >
@@ -951,7 +980,7 @@ void leaveCompany(Worker *workers[], int *workerCount, Project *projects[], int 
         printf("Select a worker to leave the company:\n");
         displayAllWorkers(workers,*workerCount);
         printf("Enter the worker's number: ");
-        scanf("%d", &choiceWorker);
+        choiceWorker = readNumber();
 
         //Checks if the user's input is valid
         if ((choiceWorker < MIN_NUMBER_IN_DISPLAY_LIST) || (choiceWorker > (*workerCount)))
@@ -1106,6 +1135,18 @@ void freeAllAllocations(Worker *workers[], int workerCount, Project *projects[],
 void clearInputBuffer(void)
 {
     int c;
-    while (((c = getchar()) != '\n') && (c != '\r'))
+    while (((c = getchar()) != '\n') && (c != '\r') && (c != EOF))
     {}
+}
+
+//This function reads a number; if the input is not a number, it skips the rest of the line and returns 0 (invalid)
+int readNumber(void)
+{
+    int number;
+    if (scanf("%d", &number) != 1)
+    {
+        clearInputBuffer();
+        return 0;
+    }
+    return number;
 }

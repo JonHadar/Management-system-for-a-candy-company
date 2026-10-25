@@ -65,6 +65,7 @@ struct Project
 };
 
 void clearInputBuffer(void);
+int readNumber(void);
 int isWorkerNameExists(Worker *workers[], int workerCount, const char *name);
 int isFeatureExists(Project *project, char *featureToCheck);
 void joinCompany(Worker *workers[], int *workerCount);
