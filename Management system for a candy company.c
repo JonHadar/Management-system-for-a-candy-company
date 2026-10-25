@@ -690,7 +690,7 @@ void workOnProject(Worker *workers[], int workerCount, int *projectCount)
     else
     {
         //If there are no projects in the company
-        if (projectCount == NO_PROJECTS_IN_COMPANY)
+        if (*projectCount == NO_PROJECTS_IN_COMPANY)
             printf("There are no projects in the company yet, please create a project first.\n");
 
         //There are workers in the company
