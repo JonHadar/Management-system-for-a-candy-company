@@ -1016,6 +1016,8 @@ void leaveCompany(Worker *workers[], int *workerCount, Project *projects[], int 
                         projects[*projectCount] = NULL;
                         //Reduce the project's count in the company by one
                         (*projectCount)--;
+                        //The next project moved into this cell, so check this cell again
+                        y--;
                     }
                 }
 
